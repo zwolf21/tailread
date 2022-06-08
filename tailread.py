@@ -43,14 +43,3 @@ def readlines(bytesio, batch_size=1024, keepends=True, **encoding_kwargs):
     if encoding_kwargs:
         buf = buf.decode(**encoding_kwargs)
     yield from reversed(buf.splitlines(keepends))
-
-
-for line in readlines('access.log', encoding='utf-8', errors='replace'):
-    print(line)
-    if 'line 8' in line:
-        break
-
-# line 11
-# line 10
-# line 9
-# line 8
