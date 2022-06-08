@@ -1,35 +1,42 @@
 import glob, os
+from unittest import TestCase, main
+
 from tailread import readlines
 
 
 
-def main():
-    line_count = 0
-    file_count = 0
-    for path in glob.glob('./**/*.*', recursive=True):
-        fn, ext = os.path.splitext(path)
+class TestReadLines(TestCase):
 
-        if fn == '__main__':
-            continue
+    def test_readlines(self):
+        line_count = 0
+        file_count = 0
+        for path in glob.glob('./**/*.*', recursive=True):
+            fn, ext = os.path.splitext(path)
 
-        if ext in ['.exe', '.pyc', '.dist-info', '.egg-info', '.gz', '.odt']:
-            continue
-        
-        file_count += 1
-        normalines = []
-        with open(path, 'rb') as fp:
-            normalines = reversed(fp.readlines())
-        
-        tailines = readlines(open(path, 'rb'))
+            if fn == '__main__':
+                continue
 
-        for rnorm, tails in zip(normalines, tailines):
-            if rnorm != tails:
-                print(path)
-            assert rnorm == tails
-            line_count +=1
-    
-    print('file_count:', '{} files'.format(file_count))
-    print('line_count:', '{} lines'.format(line_count))
+            if ext in ['.exe', '.pyc', '.dist-info', '.egg-info', '.gz', '.odt']:
+                continue
+            
+            file_count += 1
+            normalines = []
+            with open(path, 'rb') as fp:
+                normalines = reversed(fp.readlines())
+            
+            tailines = None
+            with open(path, 'rb') as fp:
+                tailines = list(readlines(fp, batch_size=4096))
+
+            for rnorm, tails in zip(normalines, tailines):
+                self.assertEqual(rnorm, tails)
+                line_count +=1
+
+        print('file_count:', '{} files'.format(file_count))
+        print('line_count:', '{} lines'.format(line_count))
+
+
+
 
 # tested
 # file_count: 551 files
