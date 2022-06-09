@@ -26,7 +26,7 @@ class TestReadLines(TestCase):
             
             tailines = None
             with open(path, 'rb') as fp:
-                tailines = list(readlines(fp, batch_size=4096))
+                tailines = list(readlines(fp, batch_size=2048))
 
             for rnorm, tails in zip(normalines, tailines):
                 self.assertEqual(rnorm, tails)
