@@ -7,7 +7,7 @@ with open("README.md", "r", encoding="utf-8") as fh:
 
 setup(
 	name='tailread',
-	version='1.0.1',
+	version='1.0.2',
 	license='MIT',
 	description='A Simple line generator from tail of file',
 	long_description=long_description,
