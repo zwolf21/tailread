@@ -21,9 +21,8 @@ def readlines(bytesio, batch_size=1024, **encoding_kwargs):
         cut, *parsed = _extract_line(fp, p, batch_size, content_length)
 
         for line in reversed(parsed):
-            line += buf
+            yield line + buf
             buf = b""
-            yield line
             
         buf = cut + buf
     
