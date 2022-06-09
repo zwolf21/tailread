@@ -7,11 +7,12 @@ from .decorators import decode, split_duplicated
 
 @decode
 @split_duplicated
-def readlines(bytesio, batch_size=1024, **encoding_kwargs):
+def readlines(bytesio, batch_size:int=1024):
     '''bytesio: file path or BufferedReader
        batch_size: size to be processed
        keepends: keep linesep
-       encoding_kwargs: decoding info for results
+       encoding_kwargs: kwargs for bytes decoding
+        - encoding, errors
     '''
     path, fp = _validate_args(bytesio, batch_size)
     content_length = get_file_size(fp)
@@ -23,7 +24,6 @@ def readlines(bytesio, batch_size=1024, **encoding_kwargs):
         for line in reversed(parsed):
             yield line + buf
             buf = b""
-            
         buf = cut + buf
     
     if path:

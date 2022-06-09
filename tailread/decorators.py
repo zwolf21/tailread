@@ -13,9 +13,9 @@ def split_duplicated(func):
 
 def decode(func):
     @functools.wraps(func)
-    def wrapper(*args, encoding=None, replace=None, **kwargs):
+    def wrapper(*args, encoding=None, errors='strict', **kwargs):
         for line in func(*args, **kwargs):
             if encoding:
-                yield line.decode(encoding=encoding, replace=replace)
+                yield line.decode(encoding=encoding, errors=errors)
             yield line
     return wrapper
